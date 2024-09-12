@@ -13,8 +13,24 @@ const userSchema =new mongoose.Schema({
     },
     phone:{
         type:String,
-        required:true,
-        
+    },
+    gender: {
+      type: String,
+      enum: ["Male", "Female",]
+    },
+    address: {
+        type: String,
+        default: "",
+      }, 
+      
+    token: {
+      type: String,
+      default: "",
+    },
+    profile_image: {
+      type :String ,
+      default:"",
+      
     },
     password:{
         type :String,

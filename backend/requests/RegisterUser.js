@@ -13,7 +13,7 @@ const validateUser =() =>[
     .isString()
     .withMessage('Name should be in valid string')
     .bail() ,
-
+     
 //  **** for email ****
     body("email")
     .trim()
@@ -25,15 +25,15 @@ const validateUser =() =>[
     .withMessage('Please provide a valid email address')
     .bail()
     .custom((value) => {
-    return User.findOne({ email: { $regex: new RegExp(`^${value}$`, 'i') } }).then((user) => {
+      return User.findOne({ email: { $regex: new RegExp(`^${value}$`, 'i') } }).then((user) => {
         if (user) {
-        return Promise.reject('Email is already in use!');
+          return Promise.reject('Email is already in use!');
         }
-  });
-}),
+      });
+    }),
   
     // for phone no *****
-    body('phone')
+    body("phone")
     .trim()
     .not()
     .isEmpty()
@@ -45,7 +45,7 @@ const validateUser =() =>[
 
 
     // **** for password *****
-    body('password')
+    body("password")
     .not()
     .isEmpty() 
     .withMessage('Password field is required.')
@@ -68,7 +68,7 @@ const validateUser =() =>[
     .bail(),
 
 //    for confirm password*****
-    body('confirmPassword')
+    body("confirmPassword")
     .not()
     .isEmpty()
     .withMessage('Confirm password field is required.')
@@ -81,15 +81,12 @@ const validateUser =() =>[
     })
     .bail(),
 
-    (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
-    }
-
-    // Proceed with registration logic (e.g., save user)
-    res.json({ message: 'Registration successful' });
-    },
+    (req, res, next) => {
+      const errors = validationResult(req);
+      // console.log(errors,'got it ,okieee')
+      if (!errors.isEmpty())
+        return res.status(422).json({ errors: errors.array() });
+      next();
+  },
 ]
-
 module.exports = validateUser();
