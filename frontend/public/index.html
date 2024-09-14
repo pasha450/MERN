@@ -17,9 +17,19 @@
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
 
     
-    <link href="assests/css/bootstrap.min.css" rel="stylesheet">
-    <link href="assests/css/font-awesome.css" rel="stylesheet">
-    <link href="assests/css/main.css" rel="stylesheet"> 
+    <link href="/assests/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assests/css/font-awesome.css" rel="stylesheet">
+    <link href="/assests/css/main.css" rel="stylesheet"> 
+
+    <link href="/assests/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assests/css/font-awesome.css" rel="stylesheet">
+
+     <!-- Slick Slider -->
+  <link href="https://cdn.jsdelivr.net/jquery.slick/1.4.1/slick.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.css" rel="stylesheet">
+
+  <link href="css/main.css" rel="stylesheet">
     <!--
       Notice the use of %PUBLIC_URL% in the tags above.
       It will be replaced with the URL of the `public` folder during the build.
@@ -35,9 +45,40 @@
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
    
-    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <!-- <script type="text/javascript" src="js/jquery.min.js"></script>
     <script type="text/javascript" src="js/popper.min.js"></script>
-    <script type="text/javascript" src="js/bootstrap.min.js"></script>
-
+    <script type="text/javascript" src="js/bootstrap.min.js"></script> -->
+    
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+  <script type="text/javascript" src="js/popper.min.js"></script>
+  <script type="text/javascript" src="js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery.slick/1.4.1/slick.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.js"></script>
+  <script>
+    $('.owl-carousel').owlCarousel({
+        loop: false,
+        margin: 20,
+        dots: false,
+        nav: true,
+        items: 5,
+        responsive:{
+        0:{
+            items:1,
+        },
+        600:{
+            items:2,
+        },
+        1000:{
+            items:3,
+        },
+        1200:{
+            items:4,
+        },
+        1300:{
+            items:5,
+        }
+    }
+    })      
+  </script>
   </body>
 </html>

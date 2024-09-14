@@ -4,7 +4,7 @@ import ResetPassword from '../components/ResetPassword'
 const PasswordSet = () => {
   return (
     <>
-     <ResetPassword/>
+     <ResetPassword />
     </>
   )
 }
