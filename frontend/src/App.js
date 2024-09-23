@@ -7,6 +7,9 @@ import Forget from './pages/Forget'
 import PasswordSet from './pages/PasswordSet';
 import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile';
+import Project from './pages/Project';
+import Developer from './pages/Developer';
+import Priority from './pages/Priority';
 
 export default function App() {
   return ( 
@@ -21,7 +24,9 @@ export default function App() {
        <Route path='/reset-password/:token' element ={<PasswordSet/>}></Route>
        <Route path ='/dashboard' element ={<Dashboard/>}></Route>
        <Route path="/profile" element={<Profile/>}/>
-       
+       <Route path ="/project" element={<Project/>}></Route>
+       <Route path ="/developer" element ={<Developer/>}></Route>
+       <Route path ="/priority" element ={<Priority/>}></Route>
     </Routes>
   </BrowserRouter>
       

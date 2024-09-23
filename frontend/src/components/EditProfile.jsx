@@ -113,10 +113,8 @@ function EditProfile(){
           <div className="row">
             <div className="col-sm-12 text-center">
               <div className="title-bg title2 d-flex align-items-center justify-content-between">
-                <img src="/assests/images/client.svg" alt="icon"/>
-                <h1>Clients</h1>
-                <Link className="right-btn position-static" to =""><i className="fa fa-plus"></i> Add
-                  Clients</Link>
+                <img src="/assests/images/calendar.svg" alt="icon"/>
+            
               </div>
             </div>
             <div className="col-sm-12">

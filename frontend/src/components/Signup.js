@@ -60,10 +60,9 @@ function Signup() {
           const response = await axios.post(`${apiUrl}/register`, formValues);
           console.log('Signup successful:', response);
           toast.success('Registration successful!');
-          
           setTimeout(() => {
           navigate('/login');
-          }, 800);
+          }, 800);  
         }catch (error) {
           console.error('Signup error:', error);
 
@@ -93,6 +92,7 @@ function Signup() {
                   <Link to ="/">
                     <img src="images/brand-logo.png" alt=""/>
                   </Link>
+                 
                 </div>
                 <h1>Register</h1>
                 <p>Hello Welcome to the <span> lifteachother! </span>

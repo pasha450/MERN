@@ -5,6 +5,14 @@
     margin: 0;
     outline: none;
 }
+.login-btn {
+    background-color: rgb(95, 3, 3);
+    border: 0;
+    color: white; 
+    padding: 12px 24px;
+    border-radius: 5px;
+  }
+
 html{
     scroll-behavior: smooth;
 }
@@ -149,6 +157,7 @@ a:hover{
     padding: 13px 0;
 }
 
+/* here****---- */
 h1 {
     font-size: 30px;
     margin-top: 0;
@@ -1255,6 +1264,7 @@ li.nav-item {
     .main-content-section .right-panel .title-bg h1 {
         font-size: 20px;
         margin: 5px 0 0;
+    
     }
 
     .card-header h5 {

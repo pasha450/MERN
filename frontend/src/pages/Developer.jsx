@@ -1,19 +1,20 @@
 import React from "react";
 import Sidebar from "../components/Sidebar";
+import Development from "../components/Development";
 
 
-const Dashboard =() =>{
+const Developer = () => {
     return(
         <>
-          <section class="main-content-outer h-100">
+            <section class="main-content-outer h-100">
             <div class="container-fluid h-100">
               <div class="form-row h-100">
                 <Sidebar/>
+                <Development/>
               </div>
               </div>
             </section>
-
-        </>
+      </>
     )
 }
-export default Dashboard;
+export default Developer;

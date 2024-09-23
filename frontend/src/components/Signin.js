@@ -70,7 +70,7 @@ function Signin(){
               localStorage.removeItem('rememberMe');
           } 
             setTimeout(() => {
-                navigate('/dashboard')
+                navigate('/profile')
              }, 800);
             } 
             catch (error) {
@@ -181,3 +181,7 @@ function Signin(){
   )
 }
 export default Signin;
+
+
+
+
