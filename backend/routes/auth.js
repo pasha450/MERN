@@ -46,5 +46,6 @@ router.post('/forgetPassword',forgetPasswordRequest,authApiController.forgetPass
 router.post('/resetPassword',authApiController.resetPassword);
 router.post('/editProfile', middleware.verifyToken ,uploadProfileImgImage.single('profile_image'),authApiController.editProfile)
 router.post('/updateProfile', uploadProfileImgImage.single('profile_image'), authApiController.updateProfile)
+
 module.exports = router;
 

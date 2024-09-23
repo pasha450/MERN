@@ -17,10 +17,8 @@ module.exports = {
 
 async function register(req,res) {
     try{
-        console.log("object")
         const {name,email,phone,password,confirmpassword} = req.body;
         const user = await  User.findOne({email:email})
-        console.log(user,'user');
         if(user !== null){
             return res.status(401).json({status:false ,error:'Email is already in use!'});
         }
@@ -119,7 +117,7 @@ async function  resetPassword(req,res) {
 
 async function editProfile( req, res) {
     try{
-         const {userId, phone, address , gender} = req.body;
+         const {userId, phone, address , gender,city} = req.body;
          const userData = await User.findById(userId)
          const baseUrl = `${req.protocol}://${req.get('host')}`;
          const profileImageUrl = `${baseUrl}/ProfileImage`;
@@ -131,7 +129,7 @@ async function editProfile( req, res) {
              if(phone)userData.phone = phone;
              if(gender)userData.gender = gender;
              if(address)userData.address = address;
-
+             if(city)userData.city = city;
       
              if(userData.profile_image != ''){
                 userData.profile_image = `${profileImageUrl}/${userData.profile_image}`
@@ -148,7 +146,7 @@ async function editProfile( req, res) {
 async function updateProfile(req, res) {
     try {
         // console.log(req.body,"ddddddddddd")
-        const { userId, password , phone ,address , gender} = req.body;
+        const { userId, password , phone ,address , gender,city} = req.body;
         const updateData = { ...req.body };
         let baseUrl = process.env.APP_URL;
         // console.log(req.file,'hiiiiiiiii');
@@ -179,6 +177,8 @@ async function updateProfile(req, res) {
         if(phone)updateData.phone = phone;
         if(address)updateData.address = address;
         if(gender)updateData.gender  = gender;
+        if(city)updateData.city = city;
+    
 
         // Update the user data
         const userData = await User.findByIdAndUpdate(userId, updateData, { new: true });
@@ -186,7 +186,7 @@ async function updateProfile(req, res) {
             userData.profile_image = `${baseUrl}/ProfileImage/${req.file.filename}`;
         }
         res.status(200).json({ status: true, userData });
-
+       
     } catch (error) {
         console.log(error);
         res.status(500).json({ error: 'Profile update failed' });

@@ -22,15 +22,21 @@ const userSchema =new mongoose.Schema({
         type: String,
         default: "",
       }, 
-      
+    city:{
+       type:String,
+       default:" ",
+    },
     token: {
       type: String,
       default: "",
     },
     profile_image: {
       type :String ,
-      default:"",
-      
+      default:"",  
+    },
+    status: {
+      type: Number,
+      default: 0,
     },
     password:{
         type :String,
@@ -40,7 +46,17 @@ const userSchema =new mongoose.Schema({
         type:String,
         default:"",
     },
-});
+    created_by: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "users",
+      default: null, // Changed default to null
+      required: false,
+    },
+  },
+  {
+    timestamps: { createdAt: "created_at", updatedAt: "updated_at" },
+  }
+);
     // middleware to hash password before saving *****
     userSchema.pre('save', async function (next) {
         if (!this.isModified('password')) {

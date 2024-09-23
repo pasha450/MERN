@@ -1,15 +1,16 @@
 const bcrypt = require("bcryptjs");
-// const CryptoJs = require("crypto-js");
+const CryptoJs = require("crypto-js");
 
 module.exports ={
-    // baseUrl, 
-    securePassword
+    baseUrl, 
+    securePassword,
+    encryptData
 };
 
-// function baseUrl(req) {
-//     const url = req.protocol + "://" + req.headers.host;
-//     return url;
-//   }
+function baseUrl(req) {
+    const url = req.protocol + "://" + req.headers.host;
+    return url;
+  }
   
   async function securePassword(password) {
     try {
@@ -18,6 +19,15 @@ module.exports ={
         return hash;
     } catch (error) {
         console.error('Error in hashing password:', error);
-        throw error; // Throw error to handle it in calling function
+        throw error; 
     }
   }
+//   for encrypt data ******
+  const secretPass = "XkhZG4fW2t2W";
+async function encryptData(text) {
+    const encryptedData = CryptoJS.AES.encrypt(
+    JSON.stringify(text),
+    secretPass
+    ).toString();
+    return encryptedData;
+};
