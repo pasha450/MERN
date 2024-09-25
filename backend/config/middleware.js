@@ -9,7 +9,7 @@ module.exports.setFlash = function (req, res, next) {
         error: req.flash("error"),
     };
     next();
-};
+};  
   
 module.exports.verifyToken =  function verifyToken(req, res, next) {
     const token = req.header('Authorization');

@@ -11,12 +11,12 @@ module.exports ={
      update,
      request,
      deleted,
-}
-
+}    
+     
 async function store(req,res) {
     try{
-    const{DeveloperName, Email, Role, Status} = req.body;
-    const newDeveloper = await Developer.create({DeveloperName, Email, Role, Status})
+    
+    const newDeveloper = await Developer.create(req.body)
     console.log(newDeveloper,"newDeveloper")
     res.status(200).json({status:true ,message:"developer  created successfully",data:newDeveloper})
     }catch(error){
@@ -94,10 +94,13 @@ async function update(req, res) {
         } else {
             delete updateData.password;
         }
-
+     
         // Update the user data
         const userData = await Developer.findByIdAndUpdate(userId, updateData, { new: true });
-        if (req.file != undefined) {
+        if (!userData) {   //add new
+            return res.status(404).json({ error: 'User not found' });
+        }
+        if (req.file) {
             userData.profile_image = `${baseUrl}/ProfileImage${req.file.filename}`;
         }else{
             userData.profile_image = ``;

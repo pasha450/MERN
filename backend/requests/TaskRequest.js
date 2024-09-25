@@ -2,21 +2,19 @@ const { body, validationResult } = require('express-validator');
 const ContactUs = require('../models/Task');
 
 var validateUser = () => [
-  body('projectname')
-    .trim()
-    .not()
-    .isEmpty()
-    .withMessage(' ProjectName can not be empty!')
-    .bail()
-    .isString()
-    .withMessage(' ProjectName should be a valid string!')
-    .bail()
-    .isLength({ min: 1, max: 1000 })
-    .withMessage('ProjectName length is should be in a valid range!')
-    .bail(),
+  body('ProjectName')
+  .trim()
+  .not()
+  .isEmpty()
+  .withMessage('ProjectName cannot be empty!')
+  .isString()
+  .withMessage('ProjectName should be a valid string!')
+  .isLength({ min: 1, max: 1000 })
+  .withMessage('ProjectName length should be in a valid range!')
+  .bail(),
+
   
-  
-   body('status')
+   body('Status')
     .isBoolean()
     .withMessage('Status must be true or false')
     .bail(),

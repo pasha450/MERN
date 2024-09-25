@@ -1,6 +1,7 @@
 const express = require('express');
 const db = require('../config/mongoose');
 const router = express.Router();
+
 // use for Authentication ***** 
 
 router.use('/api/priority',require('./priority'))

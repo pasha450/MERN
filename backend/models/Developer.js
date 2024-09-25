@@ -12,10 +12,15 @@ Email:{
 Status:{
     type:String,
     required:true,
+    default:1,
+   },
+   Role:{
+    type:String,
+    required:true,
    },
 profile_image: {
     type :String ,
-    default:"",  
+    default:'',
   },
  },
  {

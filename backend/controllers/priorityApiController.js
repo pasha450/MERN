@@ -60,12 +60,14 @@ async function store(req,res) {
     
     async function update (req, res){
         try {
+            // console.log(req.body,'haaahaa')
             const {Name,StatusChecked} = req.body;
-            const userId = req.params.id;
+            const userId = req.body.userId;
             const updateData = { 
                 Name, 
                 StatusChecked 
             };
+            // console.log(userId,'no nooooo')
             const userData = await Priority.findByIdAndUpdate(userId, updateData, { new: true });
             if (!userData) {
                 return res.status(404).json({ status: false, error: 'Sorry! No Data Found' });

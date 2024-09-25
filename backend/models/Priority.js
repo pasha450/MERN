@@ -12,7 +12,7 @@ StatusChecked:{
  },
  {
     timestamps: { createdAt: "created_at", updatedAt: "updated_at" },
-  }
+  } 
 )
 const Priority = mongoose.model("priority", prioritySchema);
 module.exports = Priority;

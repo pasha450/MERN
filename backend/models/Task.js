@@ -1,27 +1,32 @@
 const mongoose = require('mongoose')
 
 const taskSchema =new mongoose.Schema({
-ProjectName:{
-    type:String,
-    required:true,
-},
-Issue:{
-    type:String,
-    required:true,
-},
-Status:{
-    type: String,
-    required: true,
-    
-},
-Assignto:{
-    type:String,
-    required:true,
-   },
-profile_image: {
-    type :String ,
-    default:"",  
-  },
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+      },
+      ProjectName: {
+        type: String,
+        required: true,
+       
+      },
+      Issue: {
+        type: String,
+        required: true,
+      },
+      Status: {
+        type: String,
+        
+      },
+      Description: {
+        type: String,
+        maxlength: 1000,
+      },
+      Assignto: {
+        type: String,
+        required: true,
+        
+      },
  },
  {
     timestamps: { createdAt: "created_at", updatedAt: "updated_at" },

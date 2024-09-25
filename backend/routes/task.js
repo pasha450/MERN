@@ -11,9 +11,10 @@ const TaskRequest = require('../requests/TaskRequest');
 
 router.post('/',taskApiController.userList);
 router.post('/store', middleware.verifyToken, upload.none(), taskApiController.store);
-router.post('/editprofile', middleware.verifyToken,upload.none(), taskApiController.editprofile);
+router.post('/edit', middleware.verifyToken,upload.none(), taskApiController.edit);
 router.post('/request',TaskRequest,taskApiController.request);
 router.post('/update',middleware.verifyToken,upload.none(),taskApiController.update);
 router.post('/deleted',taskApiController.deleted);
+router.get('/get-developer',taskApiController.getDeveloper);
 
 module.exports=router;
