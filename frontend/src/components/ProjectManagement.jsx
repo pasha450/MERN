@@ -11,8 +11,19 @@ function ProjectManagement() {
   const [userData, setUserData] = useState({});
   const [userId, setUserId] = useState('');
   const [header, setHeader] = useState({});
-  const [users, setUsers,] = useState([]);
+  const [users, setUsers] = useState([]);
+  const [activeDevelopers, setActiveDevelopers] = useState([]);
+
+  const [formData, setFormData] = useState({
+    userId: '',
+    ProjectName: '',
+    Issue: '',
+    StatusChecked: '',
+    Description: '',
+    Assignto: '',
+  });
   
+
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
   
@@ -34,41 +45,58 @@ function ProjectManagement() {
       } catch (error) { 
         console.error('Error fetching userData:', error);
       }
-
+      
     };
     fetchUsers();
   }, []);  
   
+    //  fetch active developers ----
+    useEffect(() => {
+        const fetchActiveDevelopers = async () => {
+          try {
+            const response = await axios.get(`${apiUrl}/task/get-developer`, { headers: header });
+            console.log(response,'res')
+            setActiveDevelopers(response.data.userData);
+          } catch (error) {
+            console.error('Error fetching active developers:', error);
+          } 
+        };
+        fetchActiveDevelopers();
+      
+    }, []);
+     
   // Add new project to the list
   const addUser = (newUser) => {
     setUsers([...users, newUser]);
   };
 //  for edit ----
-  const handleClick = async (userId) => { 
-    try {
-      const token = Cookies.get('authToken');
-      const headers = {
-        'Authorization': token
-      };
-      
-      const response = await axios.post(`${apiUrl}/task/editprofile`, { userId: userId }, { headers:header});
-      const userData = response.data.userData;
+const handleClick = async (userId) => {
+  try {
+    const token = Cookies.get('authToken');
+    const headers = {
+      'Authorization': token
+    }; 
     
-      const newData = {
-        userId: userData._id,
-        ProjectName: userData.projectname,
-        Issue: userData.issue,
-        Status: userData.status,
-        Assignto:userData.assignto
-      };
-      setUserData(newData);
-      setIsModalOpen(true);
-    } catch (error) {
-      console.error('Error fetching user data:', error);
-    }
-  };
+    const response = await axios.post(`${apiUrl}/task/edit`, { userId: userId }, { headers });
+    const userData = response.data.userData;
+    
+    setFormData({
+      userId: userData._id, 
+      ProjectName: userData.ProjectName,
+      Issue: userData.Issue,
+      StatusChecked: userData.StatusChecked,
+      Assignto: userData.Assignto,
+    });
+    setIsModalOpen(true);
+  } catch (error) {
+    console.error('Error fetching user data:', error);
+  }
+};
   // for  delete *****-----
   const handledelete =async(userId) =>{
+    const confirmDelete = window.confirm("Are you sure want to delete this user?");
+    if (!confirmDelete) return;
+
      try{
       const token =Cookies.get('authToken');
       const headers ={
@@ -107,7 +135,7 @@ function ProjectManagement() {
                     <thead>
                       <tr>
                         <th>Project Name</th>
-                        <th>Status</th>
+                        <th>StatusChecked</th>
                         <th>Assign to</th>
                         <th>Action</th>
                       </tr>
@@ -116,8 +144,8 @@ function ProjectManagement() {
                     {users.map((user, index) => ( 
                         <tr key={index}>
                           <td>{user.ProjectName}</td>
-                          <td>{user.Status}</td>
-                          <td>{user.Assignto}</td>
+                          <td>{user.StatusChecked == 1 ? 'Active' : 'Deactive'}</td>
+                          <td>{user.Assignto}</td>                          
                           <td>
                             <div className="td-icons">
                               <Link to="">
@@ -143,8 +171,11 @@ function ProjectManagement() {
         isOpen={isModalOpen}
         onClose={closeModal}
         addUser={addUser}
-        setUserData={setUserData} 
-
+        userData={userData}
+        setFormData={setFormData}
+        formData={formData}
+        users={users}
+        developerList={activeDevelopers}
       />
     </>
   );

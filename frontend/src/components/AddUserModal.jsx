@@ -8,18 +8,13 @@ import { useNavigate } from 'react-router-dom';
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
-function AddUserModal({ isOpen, onClose, userToEdit, addUser, userData, setUserData }) {
+function AddUserModal({ isOpen, onClose, addUser, userData, setFormData ,formData,developerList }) {
   const navigate = useNavigate();
   const [userId, setUserId] = useState('');
   const [header, setHeader] = useState({});
-  const [formData, setFormData] = useState({
-    ProjectName: '',
-    Issue: '',
-    Status: '',
-    Description: '',
-    Assignto: '',
-  });
+  const [users, setUsers] = useState([]);
 
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -38,25 +33,36 @@ function AddUserModal({ isOpen, onClose, userToEdit, addUser, userData, setUserD
     };
     setHeader(header);
     setUserId(userId);
+     
   }, []);
-
+   
   // form submission *****
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    const formDataToSend = new FormData();
+    formDataToSend.append('userId', formData.userId);
+    formDataToSend.append('ProjectName', formData.ProjectName);
+    formDataToSend.append('Issue', formData.Issue);
+    formDataToSend.append('StatusChecked', formData.StatusChecked);
+    formDataToSend.append('Assignto', formData.Assignto);
+    
     try {
       let response;
-      if (userToEdit) {
-        response = await axios.post(`${apiUrl}/task/update`, formData, { headers: header });
+      console.log(formData.userId,'hhhh')
+      if (formData.userId) {
+        response = await axios.post(`${apiUrl}/task/update`, formDataToSend, { headers: header });
       } else {
-        response = await axios.post(`${apiUrl}/task/store`, formData, { headers: header });
+        response = await axios.post(`${apiUrl}/task/store`, formDataToSend, { headers: header });
       }
-      addUser(response.data);
+      // addUser(response.data);
       navigate(0);
          
       setFormData({
+        userId:'',
         ProjectName: '',
         Issue: '',
-        Status: '',
+        StatusChecked: '',
         Description: '',
         Assignto: '',
       });
@@ -73,7 +79,7 @@ function AddUserModal({ isOpen, onClose, userToEdit, addUser, userData, setUserD
         <div className="puu-left">
           <button type="button" className="btn-close pull-right p-3" onClick={onClose}></button>
         </div>
-
+      
         <Modal.Body>
           <div className="want-to-edit">
             <div className="popup-heading-block text-center">
@@ -97,7 +103,7 @@ function AddUserModal({ isOpen, onClose, userToEdit, addUser, userData, setUserD
             <div className="form-group mb-4">
               <label>Issue</label>
               <input
-                type="Issue"
+                type="text"
                 className="form-control"
                 name="Issue"
                 placeholder="Write your issue here"
@@ -118,26 +124,34 @@ function AddUserModal({ isOpen, onClose, userToEdit, addUser, userData, setUserD
               ></textarea>
             </div>
             <div className="form-group mb-4">
-              <label>Status</label>
-              <input
-                type="text"
-                className="form-control"
-                name="Status"
-                placeholder="Status"
-                value={formData.Status}
-                onChange={handleChange}
-              />
+              <label>Status Checked</label>
+              <select
+              className="form-control"
+              name="StatusChecked"
+              value={formData.StatusChecked}
+              onChange={handleChange}
+              >
+              <option value="">Select Status</option> 
+              <option value="1">Active</option>
+              <option value="2">Deactive</option>
+              </select> 
             </div>
-            <div className="form-group mb-4">
+             <div className="form-group mb-4">
               <label>Assign to</label>
-              <input
-                type="text"
+              <select
                 className="form-control"
                 name="Assignto"
-                placeholder="Enter the Developer name"
                 value={formData.Assignto}
                 onChange={handleChange}
-              />
+                required
+              >
+                <option value="">Select a user</option>
+                {developerList.map((user) => (
+                  <option key={user._id} value={user._id}>
+                    { user.DeveloperName} 
+                  </option>
+                ))}
+              </select>
             </div>
 
             <div className="col-md-12 text-center">

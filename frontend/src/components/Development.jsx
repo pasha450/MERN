@@ -3,9 +3,11 @@ import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import DeveloperModal from "./DeveloperModal";
 import axios from "axios";
-import Cookies from "js-cookie";
+import Cookies from "js-cookie"; 
+ 
 
 const apiUrl = process.env.REACT_APP_API_URL;
+const baseUrl = process.env.REACT_APP_BACKEND_BASE_URL;
 
 function Development() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -14,11 +16,12 @@ function Development() {
   const [userId, setUserId] = useState('');
   const [users, setUsers] = useState([]);
   const [formData,setFormData] = useState(userData)
-  const[userToEdit,setUserToEdit] =useState([]);
-
+  const [userToEdit,setUserToEdit] =useState([]);  
+  
+  
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
-
+  
   useEffect(() => {
     const token = Cookies.get('authToken');
     let loggedUserData = localStorage.getItem('storeData');
@@ -32,7 +35,9 @@ function Development() {
     
     const fetchUsers = async () => {
       try {
-        const response = await axios.post(`${apiUrl}/developer`, { userId: userId }, { headers: header });
+        const response = await axios.post(`${apiUrl}/developer`, { userId: userId }, { headers: header ,
+         
+        });
         setUsers(response.data.userData);
       } catch (error) {
         console.error('Error fetching userData:', error);
@@ -44,6 +49,7 @@ function Development() {
   const addUser = (newUser) => {
     setUsers([...users, newUser]);
   };
+
  
   const handleClick = async (userId) => { 
     try {
@@ -55,13 +61,15 @@ function Development() {
       const response = await axios.post(`${apiUrl}/developer/editprofile`, { userId: userId }, { headers });
       const userData = response.data.userData;
       console.log(userData)
-      
+
       setFormData({
         userId: userData._id,
+        profile_image: userData.profile_image,
         DeveloperName: userData.DeveloperName,
         Email: userData.Email,
         Role: userData.Role,
-        Status: userData.Status,
+        StatusChecked: userData.StatusChecked,
+       
       });
       setIsModalOpen(true);
     } catch (error) {
@@ -86,7 +94,7 @@ function Development() {
   const handleDelete = async (userId) => {
     const confirmDelete = window.confirm("Are you sure you want to delete this user?");
     if (!confirmDelete) return; 
-
+   
     try {
       const token = Cookies.get('authToken');
       const headers = {
@@ -98,7 +106,6 @@ function Development() {
       console.log('Error in user fetching data', error);
     }
   };
-
   return (
     <>
       <div className="main-content-section">
@@ -122,20 +129,44 @@ function Development() {
                   <table className="table table-hover">
                     <thead>
                       <tr>
+                        <th>ProfileImage</th>
                         <th>Developer Name</th>
                         <th>Email</th>
                         <th>Role</th>
-                        <th>Status</th>
+                        <th>Status Checked</th>
                         <th>Action</th>
+                        
                       </tr>
                     </thead>
                     <tbody>
                       {users.map((user, index) => ( 
                         <tr key={index}>
+                         <td>
+                              {user.profile_image ? (
+                                <img 
+                                  src={`${baseUrl}/ProfileImage/${user.profile_image}`} alt="Profile" 
+                                  style={{ width: '50px', height: '50px', 
+                                    borderRadius: '50%', 
+                                    objectFit: 'cover' 
+                                  }} 
+                                />
+                              ) : (
+                                <img
+                                src="/assests/images/download.png"
+                                alt="No Profile"
+                                style={{
+                                  width: '50px',
+                                  height: '50px',
+                                  borderRadius: '50%',
+                                  objectFit: 'cover',
+                                }}
+                              />
+                            )}
+                            </td>
                           <td>{user.DeveloperName}</td>
                           <td>{user.Email}</td>
                           <td>{user.Role}</td>
-                          <td>{user.Status}</td>
+                          <td>{user.StatusChecked == 1 ? 'Active' : 'Deactive'}</td>
                           <td>
                             <div className="td-icons">
                               <Link to="">
