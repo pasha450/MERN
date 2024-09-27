@@ -42,11 +42,16 @@ var validateUser = () => [
     .withMessage('Role must be between 2 and 100 characters long')
     .bail(),
 
-    body('status')
-    .isBoolean()
-    .withMessage('Status must be checked or unchecked')
-    .bail(),
-
+    body('statuschecked')
+.isBoolean()
+.withMessage('Status must be a boolean (true or false)')
+.bail()
+.custom(value => {
+  if (typeof value !== 'boolean') {
+    throw new Error('Status must be true (checked) or false (unchecked)');
+  }
+  return true;
+})
 ];
 
   (req, res, next) => {

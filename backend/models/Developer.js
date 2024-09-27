@@ -9,11 +9,10 @@ Email:{
     type:String,
     required:true,
 },
-Status:{
-    type:String,
-    required:true,
-    default:1,
-   },
+StatusChecked: { 
+  type: Number, 
+  required: true ,
+},
    Role:{
     type:String,
     required:true,
@@ -22,6 +21,7 @@ profile_image: {
     type :String ,
     default:'',
   },
+   
  },
  {
     timestamps: { createdAt: "created_at", updatedAt: "updated_at" },

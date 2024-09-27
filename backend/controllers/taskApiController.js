@@ -3,6 +3,7 @@
 const User = require("../models/User");
 const Task = require("../models/Task");
 const Developer = require("../models/Developer");
+const Priority  = require("../models/Priority");
 const fs = require("fs"); 
 const bcrypt = require("bcryptjs");
 const global = require("../_helper/GlobalHelper");
@@ -18,6 +19,8 @@ module.exports = {
      update,
      deleted, 
      getDeveloper,
+     getPriority,
+     
 }    
 
 async function store(req,res) {
@@ -36,7 +39,7 @@ async function userList(req, res) {
     try {
         const {createdBy} = req.body;
         const objectId = new mongoose.Types.ObjectId(createdBy);
-        let userData = await Task.find({}).sort({ _id: -1 });
+        let userData = await Task.find({}).sort({ _id: -1 }).populate('Assignto', 'DeveloperName');
         
         if (!userData) {
             return res.status(401).json({ status: false, data: 'Sorry ! No Data Found' });
@@ -75,14 +78,13 @@ async function request(req, res) {
 
 async function update (req, res){
     try {
-        const {Name,StatusChecked} = req.body;
-        const userId = req.body.userId;
+        const {Name,StatusChecked,userId} = req.body;
+        // const userId = req.body.userId;
         const updateData = { 
             Name, 
             StatusChecked 
         };
-        // console.log(userId,'no nooooo')
-        const userData = await Task.findByIdAndUpdate(userId, updateData, { new: true });
+        const userData = await Task.findByIdAndUpdate(userId,req.body, { new: true });
         if (!userData) {
             return res.status(404).json({ status: false, error: 'Sorry! No Data Found' });
         }    
@@ -111,7 +113,7 @@ async function deleted(req,res) {
 async function getDeveloper(req, res) {
     try {
       const userData = await Developer.find({},{DeveloperName:1});
-  
+      
       if (!userData) {
         return res.status(404).json({ status: false, message: 'No data found' });
       }
@@ -122,4 +124,20 @@ async function getDeveloper(req, res) {
     }
   }
 
+async function getPriority(req,res){
+    try {
+      const userData = await Priority.find({},{Name:true});
+      if(!userData){
+        return res.status(404).json({ status: false, message: 'ohh am sorry'});
+      }
+      res.status(200).json({status: true,userData });
+    }catch(error){
+        console.error('Error fetching data by userId or name:', error);
+        res.status(500).json({ status: false,error:'Internal server error'}); 
+    }
+}
+
+
+ 
+  
 

@@ -1,4 +1,5 @@
 const Developer = require("../models/Developer");
+// const Priority = require("../models/Priority");
 const fs = require("fs");
 const global = require("../_helper/GlobalHelper");
 const jwt = require('jsonwebtoken');
@@ -11,6 +12,7 @@ module.exports ={
      update,
      request,
      deleted,
+    //  getPriority,
 }    
      
 async function store(req,res) {
@@ -123,3 +125,19 @@ async function deleted(req,res) {
        res.status(500).json({error:'Something went wrong!'})
     }
 }
+// for get Status ****  
+
+
+// async function getPriority(req, res) {
+//     try {
+//       const userData = await Priority.find({},{Name:true});
+     
+//       if (!userData) {
+//         return res.status(404).json({ status: false, message: 'No data found' });
+//       }
+//       res.status(200).json({ status: true, userData });
+//     } catch (error) {
+//       console.error('Error fetching data by userId or name:', error);
+//       res.status(500).json({ status: false, error: 'Internal server error' });
+//     }
+//   } 

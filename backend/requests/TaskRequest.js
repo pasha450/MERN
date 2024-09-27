@@ -14,10 +14,16 @@ var validateUser = () => [
   .bail(),
 
   
-   body('Status')
-    .isBoolean()
-    .withMessage('Status must be true or false')
-    .bail(),
+  body('statuschecked')
+.isBoolean()
+.withMessage('Status must be a boolean (true or false)')
+.bail()
+.custom(value => {
+  if (typeof value !== 'boolean') {
+    throw new Error('Status must be true (checked) or false (unchecked)');
+  }
+  return true;
+}),
     
     body('Assignto')
     .trim()

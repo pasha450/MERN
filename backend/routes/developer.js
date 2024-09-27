@@ -46,4 +46,8 @@ router.post('/editprofile', middleware.verifyToken,upload.none(), developerApiCo
 router.post('/update', middleware.verifyToken, uploadProfileImage.single('profile_image'), developerApiController.update);
 router.post('/request',DeveloperRequest,developerApiController.request);
 router.post('/deleted',developerApiController.deleted);
+// for fetched  data 
+// router.get('/get-priority',developerApiController.getPriority);
+
+
 module.exports=router;   
