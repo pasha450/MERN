@@ -8,12 +8,11 @@ import { useNavigate } from 'react-router-dom';
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
-function AddUserModal({ isOpen, onClose, addUser, userData, setFormData ,formData,developerList }) {
+function AddUserModal({ isOpen, onClose, addUser, userData, setFormData ,formData,developerList,users}) {
   const navigate = useNavigate();
   const [userId, setUserId] = useState('');
   const [header, setHeader] = useState({});
-  const [users, setUsers] = useState([]);
-
+  
   
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -49,7 +48,6 @@ function AddUserModal({ isOpen, onClose, addUser, userData, setFormData ,formDat
     
     try {
       let response;
-      console.log(formData.userId,'hhhh')
       if (formData.userId) {
         response = await axios.post(`${apiUrl}/task/update`, formDataToSend, { headers: header });
       } else {
@@ -100,7 +98,7 @@ function AddUserModal({ isOpen, onClose, addUser, userData, setFormData ,formDat
                 onChange={handleChange}
               />
             </div>
-            <div className="form-group mb-4">
+             <div className="form-group mb-4">
               <label>Issue</label>
               <input
                 type="text"
@@ -110,7 +108,8 @@ function AddUserModal({ isOpen, onClose, addUser, userData, setFormData ,formDat
                 value={formData.Issue}
                 onChange={handleChange}
               />
-            </div>
+            </div> 
+
             <div className="form-group mb-4">
               <label>Description</label>
               <textarea
@@ -123,8 +122,8 @@ function AddUserModal({ isOpen, onClose, addUser, userData, setFormData ,formDat
                 onChange={handleChange}
               ></textarea>
             </div>
-            <div className="form-group mb-4">
-              <label>Status Checked</label>
+            {/* <div className="form-group mb-4">
+              <label>All Priority</label>
               <select
               className="form-control"
               name="StatusChecked"
@@ -132,11 +131,30 @@ function AddUserModal({ isOpen, onClose, addUser, userData, setFormData ,formDat
               onChange={handleChange}
               >
               <option value="">Select Status</option> 
-              <option value="1">Active</option>
-              <option value="2">Deactive</option>
+              <option value="1">A</option>
+              <option value="2">D</option>
               </select> 
+            </div> */}
+              <div className="form-group mb-4">
+              <label>All Priority</label>
+              <select
+                className="form-control"
+                name="StatusChecked"
+                value={formData.StatusChecked}
+                onChange={handleChange}
+              >
+                <option value="">Select User</option>
+                {users.map((user) => (
+                  <option key={user._id} value={user._id}>
+                    {user.Name} 
+                 </option>
+                ))}
+              </select>
             </div>
-             <div className="form-group mb-4">
+
+
+
+              <div className="form-group mb-4">
               <label>Assign to</label>
               <select
                 className="form-control"
@@ -148,15 +166,15 @@ function AddUserModal({ isOpen, onClose, addUser, userData, setFormData ,formDat
                 <option value="">Select a user</option>
                 {developerList.map((user) => (
                   <option key={user._id} value={user._id}>
-                    { user.DeveloperName} 
+                    {user.DeveloperName} 
                   </option>
-                ))}
+                ))              
+              }
               </select>
-            </div>
-
+            </div> 
             <div className="col-md-12 text-center">
               <button className="login-btn" type="submit">
-                Submit
+                Submit 
               </button>
             </div>
           </form>

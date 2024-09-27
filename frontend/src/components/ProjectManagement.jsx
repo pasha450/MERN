@@ -13,7 +13,9 @@ function ProjectManagement() {
   const [header, setHeader] = useState({});
   const [users, setUsers] = useState([]);
   const [activeDevelopers, setActiveDevelopers] = useState([]);
+  const[activePriority,setActivePriority] = useState([]);
 
+ 
   const [formData, setFormData] = useState({
     userId: '',
     ProjectName: '',
@@ -55,16 +57,32 @@ function ProjectManagement() {
         const fetchActiveDevelopers = async () => {
           try {
             const response = await axios.get(`${apiUrl}/task/get-developer`, { headers: header });
-            console.log(response,'res')
+            // console.log(response,'res')
             setActiveDevelopers(response.data.userData);
           } catch (error) {
             console.error('Error fetching active developers:', error);
           } 
         };
+        
         fetchActiveDevelopers();
-      
+        
     }, []);
-     
+
+
+    useEffect(() => {
+      const fetchPriority = async () => {
+        try {
+          const response = await axios.get(`${apiUrl}/task/get-priority`, { headers: header });
+          console.log(response,'res')
+          setActivePriority(response.data.userData);
+        } catch (error) {
+          console.error('Error fetching Priority Name List :', error);
+        } 
+      };
+      fetchPriority();
+      }, []);
+   
+  
   // Add new project to the list
   const addUser = (newUser) => {
     setUsers([...users, newUser]);
@@ -145,7 +163,8 @@ const handleClick = async (userId) => {
                         <tr key={index}>
                           <td>{user.ProjectName}</td>
                           <td>{user.StatusChecked == 1 ? 'Active' : 'Deactive'}</td>
-                          <td>{user.Assignto}</td>                          
+                          <td>{user.Assignto ? user.Assignto.DeveloperName : 'Not Assigned'}</td>
+                          
                           <td>
                             <div className="td-icons">
                               <Link to="">
@@ -166,7 +185,7 @@ const handleClick = async (userId) => {
           </div>
         </div>
       </div>
-
+      
       <AddUserModal
         isOpen={isModalOpen}
         onClose={closeModal}
@@ -174,8 +193,9 @@ const handleClick = async (userId) => {
         userData={userData}
         setFormData={setFormData}
         formData={formData}
-        users={users}
+        users={activePriority}
         developerList={activeDevelopers}
+
       />
     </>
   );

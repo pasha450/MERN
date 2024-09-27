@@ -15,6 +15,7 @@ function Status() {
   const [userId, setUserId] = useState('');
   const [users, setUsers] = useState([]);
   const [formData, setFormData] = useState(userData);
+  // const[activePriority,setActivePriority] = useState([]);
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
@@ -40,6 +41,22 @@ function Status() {
     };
     fetchUsers();
   }, []);
+
+  // fetch users  Name ***
+
+  // useEffect(() => {
+  //   const fetchPriority = async () => {
+  //     try {
+  //       const response = await axios.get(`${apiUrl}/task/get-priority`, { headers: header });
+  //       // console.log(response,'res')
+  //       setActivePriority(response.data.userData);
+  //     } catch (error) {
+  //       console.error('Error fetching Priority Name List :', error);
+  //     } 
+  //   };
+  //   fetchPriority();
+  //   }, []);
+
   
   const addUser = (newUser) => {
     setUsers([...users, newUser]);
@@ -161,7 +178,7 @@ function Status() {
         setFormData={setFormData}
         formData={formData} 
         addUser={addUser}
-        
+        // users={activePriority}
       />
     </>
   );
