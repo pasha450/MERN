@@ -16,11 +16,7 @@ const navigate = useNavigate();
 const[header,setHeader] = useState({})
 const[userId,setUserId] =useState('')
 const[selectedImage ,setSelectedImage] =useState();
-
-// const handleStatusChange = (e) => {
-//   setFormData({ ...formData, StatusChecked: e.target.checked ? 1 : 2});
-// }; 
-
+ 
 const handleChange = (e) => {
     const { name, value} = e.target;
     setFormData((prevData) => ({
@@ -52,10 +48,8 @@ const handleImageChange = (e) => {
     }));
   }
 };
- 
-
 //   submit form ****
-   const handleSubmit = async (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
       
     // Create form data object ---------- append all fields 
@@ -63,7 +57,7 @@ const handleImageChange = (e) => {
     formDataToSend.append('userId',formData.userId)
     formDataToSend.append('DeveloperName', formData.DeveloperName);
     formDataToSend.append('Email', formData.Email);
-    formDataToSend.append('StatusChecked', formData.StatusChecked);
+    formDataToSend.append('Status', formData.Status);
     formDataToSend.append('Role', formData.Role);
     formDataToSend.append('profile_image',formData.profile_image)
     if (selectedImage) {
@@ -71,7 +65,6 @@ const handleImageChange = (e) => {
     }
         try {
           let response;
-
     // -----update  exist developer-----
           if (userToEdit) {
             response = await axios.post(`${apiUrl}/developer/update`, formDataToSend, { 
@@ -91,7 +84,7 @@ const handleImageChange = (e) => {
           setFormData({
             DeveloperName:'',
             Email:'',
-            StatusChecked: '',
+            Status: '',
             Role:'',
            profile_image:'',
           });
@@ -145,13 +138,12 @@ const handleImageChange = (e) => {
                 />
             </div>
             <div className="form-group mb-4">
-              <label>Status Checked</label>
+              <label>Status</label>
               <select
               className="form-control"
-              name="StatusChecked"
-              value={formData.StatusChecked}
+              name="Status"
+              value={formData.Status}
               onChange={handleChange}
-              // onChange={handleStatusChange} 
               >
               <option value="">Select Status</option> 
               <option value="1">Active</option>

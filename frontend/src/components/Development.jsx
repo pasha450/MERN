@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import DeveloperModal from "./DeveloperModal";
 import axios from "axios";
 import Cookies from "js-cookie"; 
- 
 
 const apiUrl = process.env.REACT_APP_API_URL;
 const baseUrl = process.env.REACT_APP_BACKEND_BASE_URL;
@@ -17,7 +16,6 @@ function Development() {
   const [users, setUsers] = useState([]);
   const [formData,setFormData] = useState(userData)
   // const [userToEdit,setUserToEdit] =useState([]);  
-  
   
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
@@ -36,7 +34,6 @@ function Development() {
     const fetchUsers = async () => {
       try {
         const response = await axios.post(`${apiUrl}/developer`, { userId: userId }, { headers: header ,
-         
         });
         setUsers(response.data.userData);
       } catch (error) {
@@ -50,14 +47,12 @@ function Development() {
     setUsers([...users, newUser]);
   };
 
- 
   const handleClick = async (userId) => { 
     try {
       const token = Cookies.get('authToken');
       const headers = {
         'Authorization': token
       };
-      
       const response = await axios.post(`${apiUrl}/developer/editprofile`, { userId: userId }, { headers });
       const userData = response.data.userData;
       console.log(userData)
@@ -68,8 +63,7 @@ function Development() {
         DeveloperName: userData.DeveloperName,
         Email: userData.Email,
         Role: userData.Role,
-        StatusChecked: userData.StatusChecked,
-       
+        Status: userData.Status,
       });
       setIsModalOpen(true);
     } catch (error) {
@@ -133,7 +127,7 @@ function Development() {
                         <th>Developer Name</th>
                         <th>Email</th>
                         <th>Role</th>
-                        <th>Status Checked</th>
+                        <th>Status</th>
                         <th>Action</th>
                         
                       </tr>
@@ -166,7 +160,7 @@ function Development() {
                           <td>{user.DeveloperName}</td>
                           <td>{user.Email}</td>
                           <td>{user.Role}</td>
-                          <td>{user.StatusChecked == 1 ? 'Active' : 'Deactive'}</td>
+                          <td>{user.Status == 1 ? 'Active' : 'Deactive'}</td>
                           <td>
                             <div className="td-icons">
                               <Link to="">
@@ -188,6 +182,7 @@ function Development() {
         </div>
       </div>
       <DeveloperModal 
+        addUser={addUser}
         isOpen={isModalOpen} 
         onClose={closeModal} 
         formData={formData} 

@@ -30,15 +30,15 @@ function StatusModal({ isOpen, onClose, formData, addUser, setFormData }) {
       [name]: value,
     }));
   };
-
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    
     // Append form fields
     const formDataToSend = new FormData();
     formDataToSend.append('userId', formData.userId);
     formDataToSend.append('Name', formData.Name);
-    formDataToSend.append('StatusChecked', formData.StatusChecked);
+    formDataToSend.append('Status', formData.Status);
 
     try {
       let response;
@@ -56,7 +56,7 @@ function StatusModal({ isOpen, onClose, formData, addUser, setFormData }) {
       setFormData({
         userId: '',
         Name: '',
-        StatusChecked: '',
+        Status: '',
       });
       onClose();
     } catch (error) {
@@ -97,11 +97,11 @@ function StatusModal({ isOpen, onClose, formData, addUser, setFormData }) {
             />
           </div>
           <div className="form-group mb-4">
-              <label>Status Checked</label>
+              <label>Status</label>
               <select
               className="form-control"
-              name="StatusChecked"
-              value={formData.StatusChecked}
+              name="Status"
+              value={formData.Status}
               onChange={handleChange}
               >
               <option value="">Select Status</option> 
@@ -109,8 +109,6 @@ function StatusModal({ isOpen, onClose, formData, addUser, setFormData }) {
               <option value="2">Deactive</option>
               </select> 
             </div>
-
-
           <div className="col-md-12 text-center">
             <button
               className="login-btn"

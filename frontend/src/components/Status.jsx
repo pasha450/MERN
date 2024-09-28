@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import StatusModal from "./StatusModal";
 import axios from "axios";
 import Cookies from "js-cookie";
-import { Dropdown } from "bootstrap";
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
@@ -57,7 +56,6 @@ function Status() {
   //   fetchPriority();
   //   }, []);
 
-  
   const addUser = (newUser) => {
     setUsers([...users, newUser]);
   };
@@ -68,14 +66,13 @@ function Status() {
       const headers = {
         'Authorization': token
       };
-
       const response = await axios.post(`${apiUrl}/priority/edit`, { userId: userId }, { headers });
       const userData = response.data.userData;
 
       setFormData({
         userId: userData._id,
         Name: userData.Name,
-        StatusChecked: userData.StatusChecked,
+        Status: userData.Status,
       });
       setIsModalOpen(true);
     } catch (error) {
@@ -89,7 +86,6 @@ function Status() {
       const headers = {
         'Authorization': token
       };
-
       const response = await axios.post(`${apiUrl}/priority/update`, updatedData, { headers });
       const updatedUser = response.data.updatedUser;
       setUsers(users.map(user => user._id === updatedUser._id ? updatedUser : user));
@@ -101,7 +97,6 @@ function Status() {
   const handleDelete = async (userId) => {
     const confirmDelete = window.confirm("Are you sure want to delete this user?");
     if (!confirmDelete) return;
-
     try {
       const token = Cookies.get('authToken');
       const headers = {
@@ -113,10 +108,6 @@ function Status() {
       console.log('Error in user fetching data', error);
     }
   };
-
-
-  
-
   return (
     <>
       <div className="main-content-section">
@@ -140,7 +131,7 @@ function Status() {
                     <thead>
                       <tr>
                         <th>Name</th>
-                        <th>Status Checked</th>
+                        <th>Status</th>
                         <th>Actions</th>
                       </tr>
                     </thead>
@@ -148,9 +139,7 @@ function Status() {
                       {users.map((user, index) => (
                         <tr key={index}>
                           <td>{user.Name}</td>
-                          {/* <td>{user.StatusChecked}</td> */}
                           <td>{user.StatusChecked == 1 ? 'Active' : 'Deactive'}</td>
-
                           <td>
                             <div className="td-icons">
                               <Link to="">
