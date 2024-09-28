@@ -4,7 +4,6 @@ import AddUserModal from "./AddUserModal";
 import axios from "axios";
 import Cookies from "js-cookie";
 
-
 const apiUrl = process.env.REACT_APP_API_URL;
 
 function ProjectManagement() {
@@ -16,19 +15,18 @@ function ProjectManagement() {
   const [activeDevelopers, setActiveDevelopers] = useState([]);
   const[activePriority,setActivePriority] = useState([]);
   
-
+  // set form fields **
   const [formData, setFormData] = useState({
     userId: '',
     ProjectName: '',
     Issue: '',
-    StatusChecked: '',
+    Status: '',
     Description: '',
     Assignto: '',
     attachments:[],
     
   });
   
-
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
   
@@ -50,91 +48,82 @@ function ProjectManagement() {
       } catch (error) { 
         console.error('Error fetching userData:', error);
       }
-      
     };
     fetchUsers();
   }, []);  
   
-    //  fetch active developers ----
-    useEffect(() => {
-        const fetchActiveDevelopers = async () => {
-          try {
-            const response = await axios.get(`${apiUrl}/task/get-developer`, { headers: header });
-            // console.log(response,'res')
-            setActiveDevelopers(response.data.userData);
-          } catch (error) {
-            console.error('Error fetching active developers:', error);
-          } 
-        };
-        
-        fetchActiveDevelopers();
-        
+  //  fetch active developers ----
+  useEffect(() => {
+      const fetchActiveDevelopers = async () => {
+        try {
+          const response = await axios.get(`${apiUrl}/task/get-developer`, { headers: header });
+          setActiveDevelopers(response.data.userData);
+        } catch (error) {
+          console.error('Error fetching active developers:', error);
+        } 
+      }; 
+      fetchActiveDevelopers();   
+  }, []);
+   
+  //  ## fetch priority page user name ---
+  useEffect(() => {
+    const fetchPriority = async () => {
+      try {
+        const response = await axios.get(`${apiUrl}/task/get-priority`, { headers: header });
+        setActivePriority(response.data.userData);
+      } catch (error) {
+        console.error('Error fetching Priority Name List :', error);
+      } 
+    };
+    fetchPriority();
     }, []);
 
-
-    useEffect(() => {
-      const fetchPriority = async () => {
-        try {
-          const response = await axios.get(`${apiUrl}/task/get-priority`, { headers: header });
-          // console.log(response,'res')
-          setActivePriority(response.data.userData);
-        } catch (error) {
-          console.error('Error fetching Priority Name List :', error);
-        } 
-      };
-      fetchPriority();
-      }, []);
-
-      
-   
-  
   // Add new project to the list
-  const addUser = (newUser) => {
-    setUsers([...users, newUser]);
-  };
+    const addUser = (newUser) => {
+      setUsers([...users, newUser]);
+    };
+
 //  for edit ----
-const handleClick = async (userId) => {
-  try {
-    const token = Cookies.get('authToken');
-    const headers = {
-      'Authorization': token
-    }; 
-    
-    const response = await axios.post(`${apiUrl}/task/edit`, { userId: userId }, { headers });
-    const userData = response.data.userData;
-    
-    setFormData({
-      userId: userData._id, 
-      ProjectName: userData.ProjectName,
-      Issue: userData.Issue,
-      StatusChecked: userData.StatusChecked,
-      Assignto: userData.Assignto,
-      attachments:userData.attachments,
-      
-
-    });
-    setIsModalOpen(true);
-  } catch (error) {
-    console.error('Error fetching user data:', error);
-  }
-};
-  // for  delete *****-----
-  const handledelete =async(userId) =>{
-    const confirmDelete = window.confirm("Are you sure want to delete this user?");
-    if (!confirmDelete) return;
-
-     try{
-      const token =Cookies.get('authToken');
-      const headers ={
+    const handleClick = async (userId) => {
+    try {
+      const token = Cookies.get('authToken');
+      const headers = {
         'Authorization': token
+      }; 
+      
+      const response = await axios.post(`${apiUrl}/task/edit`, { userId: userId }, { headers });
+      const userData = response.data.userData;
+      
+      setFormData({
+        userId: userData._id, 
+        ProjectName: userData.ProjectName,
+        Issue: userData.Issue,
+        Status: userData.Status,
+        Assignto: userData.Assignto,
+        attachments:userData.attachments,
+      });
+      setIsModalOpen(true);
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+    }
+  };
+  // for  delete *****-----
+    const handledelete =async(userId) =>{
+      const confirmDelete = window.confirm("Are you sure want to delete this user?");
+      if (!confirmDelete) return;
+
+      try{
+        const token =Cookies.get('authToken');
+        const headers ={
+          'Authorization': token
+        }
+        const response = await axios.post(`${apiUrl}/task/deleted`,{userId:userId},{headers:header})
+        const userData =response.data.userData ;
+        setUsers(users.filter(user =>user._id !==userId))
+      }catch(error){
+          console.log('error in user FetchingData ',error);
       }
-      const response = await axios.post(`${apiUrl}/task/deleted`,{userId:userId},{headers:header})
-      const userData =response.data.userData ;
-      setUsers(users.filter(user =>user._id !==userId))
-     }catch(error){
-        console.log('error in user FetchingData ',error);
-     }
-  }
+    }
 
   return (
     <>
@@ -162,7 +151,7 @@ const handleClick = async (userId) => {
                     <thead>
                       <tr>
                         <th>Project Name</th>
-                        <th>StatusChecked</th>
+                        <th>Status</th>
                         <th>Assign to</th>
                         <th>Action</th>
                       </tr>
@@ -171,7 +160,7 @@ const handleClick = async (userId) => {
                     {users.map((user, index) => ( 
                         <tr key={index}>
                           <td>{user.ProjectName}</td>
-                          <td>{user.StatusChecked == 1 ? 'Active' : 'Deactive'}</td>
+                          <td>{user.Status == 1 ? 'Active' : 'Deactive'}</td>
                           <td>{user.Assignto ? user.Assignto.DeveloperName : 'Not Assigned'}</td>
                           
                           <td>

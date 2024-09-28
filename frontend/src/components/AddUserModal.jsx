@@ -12,9 +12,8 @@ function AddUserModal({ isOpen, onClose, addUser, userData, setFormData ,formDat
   const navigate = useNavigate();
   const [userId, setUserId] = useState('');
   const [header, setHeader] = useState({});
-  const[selectedImage ,setSelectedImage] =useState();
   
-  
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -32,67 +31,65 @@ function AddUserModal({ isOpen, onClose, addUser, userData, setFormData ,formDat
       Authorization: token,
     };
     setHeader(header);
-    setUserId(userId);
-     
+    setUserId(userId);  
   }, []);
 
   // for image change *****
   const handleImageChange = (e) => {
-    const file = e.target.files;
-    console.log(file,"file11")
-    if (file) {
+    const files = Array.from(e.target.files);
+    if (files.length) {
       setFormData((prevData) => ({
         ...prevData,
-        attachments: file,
+        attachments: files,
       }));
     }
   };
 
-   console.log(formData,"formData")
+
   // form submission *****
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+  
     const formDataToSend = new FormData();
     formDataToSend.append('userId', formData.userId);
     formDataToSend.append('ProjectName', formData.ProjectName);
     formDataToSend.append('Issue', formData.Issue);
-    formDataToSend.append('StatusChecked', formData.StatusChecked);
+    formDataToSend.append('Status', formData.Status);
     formDataToSend.append('Assignto', formData.Assignto);
-    formDataToSend.append('attachments',formData.attachments);
-    
+  
+    // Check if attachments exist
+    if (formData.attachments && formData.attachments.length > 0) {
+      for (let i = 0; i < formData.attachments.length; i++) {
+        formDataToSend.append('attachments', formData.attachments[i]);
+      }
+    }
+    console.log(formData,"formData")
     try {
       let response;
       if (formData.userId) {
         response = await axios.post(`${apiUrl}/task/update`, formDataToSend, {
-          headers: {
-            ...header,
-          'Content-Type': 'multipart/form-data'
-          },
+          headers: { 'Content-Type': 'multipart/form-data' },
         });
       } else {
-        response = await axios.post(`${apiUrl}/task/store`, formDataToSend, { headers: header });
+        response = await axios.post(`${apiUrl}/task/store`, formDataToSend,  {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        });
       }
-      // addUser(response.data);
-      // navigate(0);
-         
+      // Reset form data after submission
       setFormData({
-        userId:'',
+        userId: '',
         ProjectName: '',
         Issue: '',
-        StatusChecked: '',
+        Status: '',
         Description: '',
         Assignto: '',
-        attachments:[],
-       
+        attachments: [],
       });
     } catch (error) {
-      console.log('Error during submission:', error);
+      console.error('Error during submission:', error);
       onClose(true);
     }
   };
-
-
   return (
     <>
       <Modal show={isOpen} onHide={onClose} animation={false}>
@@ -149,8 +146,8 @@ function AddUserModal({ isOpen, onClose, addUser, userData, setFormData ,formDat
               <label>All Priority</label>
               <select
                 className="form-control"
-                name="StatusChecked"
-                value={formData.StatusChecked}
+                name="Status"
+                value={formData.Status}
                 onChange={handleChange}
               >
                 <option value="">Select User</option>

@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 const apiUrl = process.env.REACT_APP_API_URL;
 const baseUrl = process.env.REACT_APP_BACKEND_BASE_URL;
 
+
 function DeveloperModal({isOpen,onClose,userToEdit ,addUser,formData,setFormData}){
 const navigate = useNavigate();
 const[header,setHeader] = useState({})
@@ -38,8 +39,8 @@ useEffect(() => {
     };
     setHeader(header);
     setUserId(userId);
-  }, []);
- console.log(formData,"formData")
+  // }, [userToEdit]);
+},[]);
 
 //  for  image****----
 const handleImageChange = (e) => {
@@ -51,7 +52,7 @@ const handleImageChange = (e) => {
     }));
   }
 };
-
+ 
 
 //   submit form ****
    const handleSubmit = async (e) => {
@@ -68,9 +69,10 @@ const handleImageChange = (e) => {
     if (selectedImage) {
       formDataToSend.append('profile_image', selectedImage);
     }
-      
         try {
           let response;
+
+    // -----update  exist developer-----
           if (userToEdit) {
             response = await axios.post(`${apiUrl}/developer/update`, formDataToSend, { 
               headers: {
@@ -78,7 +80,8 @@ const handleImageChange = (e) => {
               'Content-Type': 'multipart/form-data'
               },
             });
-            navigate(0);
+            // navigate(0);
+    // **** add new developer ****----
           } else {
             response = await axios.post(`${apiUrl}/developer/store`, formDataToSend, { headers: header });
           }

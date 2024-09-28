@@ -16,7 +16,7 @@ function Development() {
   const [userId, setUserId] = useState('');
   const [users, setUsers] = useState([]);
   const [formData,setFormData] = useState(userData)
-  const [userToEdit,setUserToEdit] =useState([]);  
+  // const [userToEdit,setUserToEdit] =useState([]);  
   
   
   const openModal = () => setIsModalOpen(true);
@@ -193,7 +193,7 @@ function Development() {
         formData={formData} 
         setFormData={setFormData}
         onUpdate={handleUpdate}
-        userToEdit={userToEdit} 
+        // userToEdit={userToEdit} 
       />
     </>
   );
