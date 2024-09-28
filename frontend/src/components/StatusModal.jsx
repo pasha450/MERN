@@ -22,7 +22,7 @@ function StatusModal({ isOpen, onClose, formData, addUser, setFormData }) {
     setHeader(header);
     setUserId(userId);
   }, []);
-
+ 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({

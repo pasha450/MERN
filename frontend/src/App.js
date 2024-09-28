@@ -10,6 +10,8 @@ import Profile from './pages/Profile';
 import Project from './pages/Project';
 import Developer from './pages/Developer';
 import Priority from './pages/Priority';
+import ViewPage from './pages/ViewPage';
+
 
 export default function App() {
   return ( 
@@ -18,6 +20,7 @@ export default function App() {
     <Routes> 
     <Route path="/" element ={<Login/>}></Route>
 
+       
        <Route path='/register' element={<Register/>}></Route>
        <Route path ='/login' element ={<Login/>}></Route>
        <Route path = '/forget'element ={<Forget/>}></Route>
@@ -27,6 +30,9 @@ export default function App() {
        <Route path ="/project" element={<Project/>}></Route>
        <Route path ="/developer" element ={<Developer/>}></Route>
        <Route path ="/priority" element ={<Priority/>}></Route>
+       <Route path ="/view" element ={<ViewPage/>}></Route>
+       
+
     </Routes>
   </BrowserRouter>
       

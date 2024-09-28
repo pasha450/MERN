@@ -4,6 +4,7 @@ import AddUserModal from "./AddUserModal";
 import axios from "axios";
 import Cookies from "js-cookie";
 
+
 const apiUrl = process.env.REACT_APP_API_URL;
 
 function ProjectManagement() {
@@ -14,8 +15,8 @@ function ProjectManagement() {
   const [users, setUsers] = useState([]);
   const [activeDevelopers, setActiveDevelopers] = useState([]);
   const[activePriority,setActivePriority] = useState([]);
+  
 
- 
   const [formData, setFormData] = useState({
     userId: '',
     ProjectName: '',
@@ -23,6 +24,8 @@ function ProjectManagement() {
     StatusChecked: '',
     Description: '',
     Assignto: '',
+    profile_image:'',
+    
   });
   
 
@@ -73,7 +76,7 @@ function ProjectManagement() {
       const fetchPriority = async () => {
         try {
           const response = await axios.get(`${apiUrl}/task/get-priority`, { headers: header });
-          console.log(response,'res')
+          // console.log(response,'res')
           setActivePriority(response.data.userData);
         } catch (error) {
           console.error('Error fetching Priority Name List :', error);
@@ -81,6 +84,8 @@ function ProjectManagement() {
       };
       fetchPriority();
       }, []);
+
+      
    
   
   // Add new project to the list
@@ -104,6 +109,9 @@ const handleClick = async (userId) => {
       Issue: userData.Issue,
       StatusChecked: userData.StatusChecked,
       Assignto: userData.Assignto,
+      profile_image:userData.profile_image,
+      
+
     });
     setIsModalOpen(true);
   } catch (error) {
@@ -127,6 +135,7 @@ const handleClick = async (userId) => {
         console.log('error in user FetchingData ',error);
      }
   }
+
   return (
     <>
       <div className="main-content-section">
@@ -167,6 +176,12 @@ const handleClick = async (userId) => {
                           
                           <td>
                             <div className="td-icons">
+                             
+                             <Link to=" ">
+                                <i className="fa fa-eye" ></i>
+                              </Link>
+                              
+                               
                               <Link to="">
                                 <i className="fa fa-edit" onClick={() =>handleClick(user._id)}></i>
                               </Link>
@@ -195,7 +210,6 @@ const handleClick = async (userId) => {
         formData={formData}
         users={activePriority}
         developerList={activeDevelopers}
-
       />
     </>
   );

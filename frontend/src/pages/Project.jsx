@@ -2,7 +2,6 @@ import React from "react";
 import ProjectManagement from "../components/ProjectManagement";
 import Sidebar from "../components/Sidebar";
 
-
 const Project = () => {
     return(
         <>
@@ -11,10 +10,11 @@ const Project = () => {
               <div class="form-row h-100">
                 <Sidebar/>
                 <ProjectManagement/>
+              
               </div>
               </div>
-            </section>
+            </section>                  
       </>
     )
-}
+}  
 export default Project;

@@ -12,8 +12,9 @@ function AddUserModal({ isOpen, onClose, addUser, userData, setFormData ,formDat
   const navigate = useNavigate();
   const [userId, setUserId] = useState('');
   const [header, setHeader] = useState({});
-  
-  
+  const[selectedImage ,setSelectedImage] =useState();
+
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -21,7 +22,7 @@ function AddUserModal({ isOpen, onClose, addUser, userData, setFormData ,formDat
       [name]: value,
     }));
   };
-
+   
   useEffect(() => {
     const token = Cookies.get('authToken');
     let loggedUserData = localStorage.getItem('storeData');
@@ -34,6 +35,19 @@ function AddUserModal({ isOpen, onClose, addUser, userData, setFormData ,formDat
     setUserId(userId);
      
   }, []);
+
+  // for image change *****
+  const handleImageChange = (e) => {
+    const file = e.target.files;
+    console.log(file,"file11")
+    if (file) {
+      setFormData((prevData) => ({
+        ...prevData,
+        profile_image: file,
+      }));
+    }
+  };
+
    
   // form submission *****
   const handleSubmit = async (e) => {
@@ -45,16 +59,18 @@ function AddUserModal({ isOpen, onClose, addUser, userData, setFormData ,formDat
     formDataToSend.append('Issue', formData.Issue);
     formDataToSend.append('StatusChecked', formData.StatusChecked);
     formDataToSend.append('Assignto', formData.Assignto);
-    
+    formDataToSend.append('profile_image',formData.profile_image)
     try {
       let response;
       if (formData.userId) {
-        response = await axios.post(`${apiUrl}/task/update`, formDataToSend, { headers: header });
+        response = await axios.post(`${apiUrl}/task/update`, formDataToSend, { headers: header }
+          
+        );
       } else {
         response = await axios.post(`${apiUrl}/task/store`, formDataToSend, { headers: header });
       }
       // addUser(response.data);
-      navigate(0);
+      // navigate(0);
          
       setFormData({
         userId:'',
@@ -63,6 +79,8 @@ function AddUserModal({ isOpen, onClose, addUser, userData, setFormData ,formDat
         StatusChecked: '',
         Description: '',
         Assignto: '',
+        profile_image:'',
+       
       });
     } catch (error) {
       console.log('Error during submission:', error);
@@ -86,7 +104,7 @@ function AddUserModal({ isOpen, onClose, addUser, userData, setFormData ,formDat
               <p>Please report the incorrect information</p>
             </div>
           </div>
-          <form className="formarea" onSubmit={handleSubmit}>
+          <form className="formarea" onSubmit={handleSubmit} encType="multipart/form-data">
             <div className="form-group mb-4">
               <label>Project Name</label>
               <input
@@ -122,19 +140,7 @@ function AddUserModal({ isOpen, onClose, addUser, userData, setFormData ,formDat
                 onChange={handleChange}
               ></textarea>
             </div>
-            {/* <div className="form-group mb-4">
-              <label>All Priority</label>
-              <select
-              className="form-control"
-              name="StatusChecked"
-              value={formData.StatusChecked}
-              onChange={handleChange}
-              >
-              <option value="">Select Status</option> 
-              <option value="1">A</option>
-              <option value="2">D</option>
-              </select> 
-            </div> */}
+            
               <div className="form-group mb-4">
               <label>All Priority</label>
               <select
@@ -151,9 +157,6 @@ function AddUserModal({ isOpen, onClose, addUser, userData, setFormData ,formDat
                 ))}
               </select>
             </div>
-
-
-
               <div className="form-group mb-4">
               <label>Assign to</label>
               <select
@@ -172,6 +175,17 @@ function AddUserModal({ isOpen, onClose, addUser, userData, setFormData ,formDat
               }
               </select>
             </div> 
+
+            <div className="form-group mb-4">
+              <label>Profile Image</label>
+              <input
+                type="file"
+                multiple
+                className="form-control"
+                name="profile_image"
+                onChange={handleImageChange}
+              />
+            </div>
             <div className="col-md-12 text-center">
               <button className="login-btn" type="submit">
                 Submit 
