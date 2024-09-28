@@ -1,5 +1,4 @@
 const Developer = require("../models/Developer");
-// const Priority = require("../models/Priority");
 const fs = require("fs");
 const global = require("../_helper/GlobalHelper");
 const jwt = require('jsonwebtoken');
@@ -12,18 +11,15 @@ module.exports ={
      update,
      request,
      deleted,
-    //  getPriority,
 }    
-     
 async function store(req,res) {
     try{
-    
-    const newDeveloper = await Developer.create(req.body)
-    console.log(newDeveloper,"newDeveloper")
-    res.status(200).json({status:true ,message:"developer  created successfully",data:newDeveloper})
+        const newDeveloper = await Developer.create(req.body)
+        console.log(newDeveloper,"newDeveloper")
+        res.status(200).json({status:true ,message:"developer  created successfully",data:newDeveloper})
     }catch(error){
-     console.log('developer creation error:',error)
-     res.status(500).json({error:'developer creation failed'})
+        console.log('developer creation error:',error)
+        res.status(500).json({error:'developer creation failed'})
     }
 } 
 
@@ -47,19 +43,16 @@ async function userList(req, res) {
 async function editprofile(req,res){
     try {
         const {userId} = req.body;
-
         let userData = await Developer.findById(userId)
         if (!userData) {
             return res.status(401).json({ status: false, error: 'Sorry ! No Data Found' });
         }
         res.status(200).json({status: true, userData:userData});
-
     } catch (error) {
         console.log(error);
         res.status(500).json({ error: 'Something went wrong !' });
     }
 }
-
 async function request(req, res) {
     try {
         await Developer.create(req.body);
@@ -114,7 +107,7 @@ async function update(req, res) {
     }
 }
 
-
+// ## for deleted**
 async function deleted(req,res) {
     try{
       let{userId}=req.body
@@ -125,19 +118,3 @@ async function deleted(req,res) {
        res.status(500).json({error:'Something went wrong!'})
     }
 }
-// for get Status ****  
-
-
-// async function getPriority(req, res) {
-//     try {
-//       const userData = await Priority.find({},{Name:true});
-     
-//       if (!userData) {
-//         return res.status(404).json({ status: false, message: 'No data found' });
-//       }
-//       res.status(200).json({ status: true, userData });
-//     } catch (error) {
-//       console.error('Error fetching data by userId or name:', error);
-//       res.status(500).json({ status: false, error: 'Internal server error' });
-//     }
-//   } 

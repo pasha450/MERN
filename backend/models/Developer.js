@@ -9,14 +9,14 @@ Email:{
     type:String,
     required:true,
 },
-StatusChecked: { 
+Status: { 
   type: Number, 
   required: true ,
 },
-   Role:{
-    type:String,
-    required:true,
-   },
+Role:{
+  type:String,
+  required:true,
+},
 profile_image: {
     type :String ,
     default:'',

@@ -14,7 +14,7 @@ var validateUser = () => [
   .bail(),
 
   
-  body('statuschecked')
+  body('Status')
 .isBoolean()
 .withMessage('Status must be a boolean (true or false)')
 .bail()

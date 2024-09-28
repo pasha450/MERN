@@ -14,7 +14,7 @@ const taskSchema =new mongoose.Schema({
         type: String,
         required:true, 
       },
-      StatusChecked : { 
+      Status : { 
         type: mongoose.Schema.Types.ObjectId,
         ref: 'priority',
       },
