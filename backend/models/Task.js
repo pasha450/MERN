@@ -26,6 +26,23 @@ const taskSchema =new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'developer',
       },
+      attachments: [{
+        name : {
+          type: String,
+          default :  '',
+          required: false,
+        },
+        size : {
+          type: String,
+          default: '',
+          required: false,
+        },
+        extension : {
+          type: String,
+          default: '',
+          required: false,
+        },
+    }],
  },
  {
     timestamps: { createdAt: "created_at", updatedAt: "updated_at" },

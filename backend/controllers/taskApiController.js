@@ -76,24 +76,70 @@ async function request(req, res) {
     }
 }
 
-async function update (req, res){
+// async function update (req, res){
+//     try {
+//         const {Name,StatusChecked,userId} = req.body;
+//         // const userId = req.body.userId;
+//         const updateData = { 
+//             Name, 
+//             StatusChecked 
+//         };
+//         const userData = await Task.findByIdAndUpdate(userId,req.body, { new: true });
+//         if (!userData) {
+//             return res.status(404).json({ status: false, error: 'Sorry! No Data Found' });
+//         }    
+//         res.status(200).json({ status: true, message: 'User data updated successfully', userData });
+//     } catch (error) {
+//         console.error(error);
+//         res.status(500).json({ status: false, error: 'Something went wrong!' });
+//     }
+// };
+
+
+async function update(req, res) {
     try {
-        const {Name,StatusChecked,userId} = req.body;
-        // const userId = req.body.userId;
-        const updateData = { 
-            Name, 
-            StatusChecked 
-        };
-        const userData = await Task.findByIdAndUpdate(userId,req.body, { new: true });
-        if (!userData) {
-            return res.status(404).json({ status: false, error: 'Sorry! No Data Found' });
-        }    
-        res.status(200).json({ status: true, message: 'User data updated successfully', userData });
+        const { userId,password} = req.body;
+        const updateData = { ...req.body };
+        let  baseUrl = process.env.APP_URL
+        if (req.file != undefined) {
+            let profileImage = updateData.profile_image;
+            const filePath = "./assets/profileImage" + profileImage;
+            updateData.profile_image = req.file.filename;
+            if (profileImage != "") {
+              fs.exists(filePath, function (exists) {
+                if (exists) {
+                  fs.unlinkSync(filePath);
+                } else {
+             
+                } 
+              });
+            }
+            updateData.profile_image = `${req.file.filename}`;
+          } else {
+            delete updateData.profile_image;
+          }
+        if (password) {
+            updateData.password = await global.securePassword(password);
+        } else {
+            delete updateData.password;
+        }
+     
+        // Update the user data
+        const userData = await Task.findByIdAndUpdate(userId, updateData, { new: true });
+        if (!userData) {   //add new
+            return res.status(404).json({ error: 'User not found' });
+        }
+        if (req.file) {
+            userData.profile_image = `${baseUrl}/ProfileImage${req.file.filename}`;
+        }else{
+            userData.profile_image = ``;
+        }
+        res.status(200).json({ status: true, userData });
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ status: false, error: 'Something went wrong!' });
+        console.log(error);
+        res.status(500).json({ error: 'Something went wrong !' });
     }
-};
+}
 
 
 // for delete *****
