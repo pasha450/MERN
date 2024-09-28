@@ -12,13 +12,14 @@ const TaskRequest = require('../requests/TaskRequest');
 const storageProfileImg = multer.diskStorage({
     destination: (req, file, callback) => {
         const dir = './assets/ProjectAttachment';
+        console.log("case 11");
         if (!fs.existsSync(dir)) {
             fs.mkdir(dir, err => callback(err, dir));
         }
         callback(null, dir);
     },
-    filename: (req, files, callback) => {
-        console.log(files,'fileeeee')
+    filename: (req, file, callback) => {
+        console.log(file,'fileeeee')
         const fileName = file.originalname.toLowerCase().split(' ').join('-');
         const newFileName = Date.now() + fileName;
         console.log(newFileName,"newFileName")
@@ -42,10 +43,10 @@ var uploadProjectAttachment = multer({
 
 
 router.post('/',taskApiController.userList);
-router.post('/store', middleware.verifyToken, upload.none(), taskApiController.store);
-router.post('/edit', middleware.verifyToken,uploadProjectAttachment.array('attachments', 10), taskApiController.edit);
+router.post('/store',  uploadProjectAttachment.any(), taskApiController.store);
+router.post('/edit', middleware.verifyToken, taskApiController.edit); 
 router.post('/request',TaskRequest,taskApiController.request);
-router.post('/update',middleware.verifyToken,uploadProjectAttachment.array('attachments', 100),taskApiController.update);
+router.post('/update',middleware.verifyToken,uploadProjectAttachment.any(),taskApiController.update);
 router.post('/deleted',taskApiController.deleted);
 router.get('/get-developer',taskApiController.getDeveloper);
 router.get('/get-priority',taskApiController.getPriority);
