@@ -13,8 +13,8 @@ function AddUserModal({ isOpen, onClose, addUser, userData, setFormData ,formDat
   const [userId, setUserId] = useState('');
   const [header, setHeader] = useState({});
   const[selectedImage ,setSelectedImage] =useState();
-
-
+  
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -43,12 +43,12 @@ function AddUserModal({ isOpen, onClose, addUser, userData, setFormData ,formDat
     if (file) {
       setFormData((prevData) => ({
         ...prevData,
-        profile_image: file,
+        attachments: file,
       }));
     }
   };
 
-   
+   console.log(formData,"formData")
   // form submission *****
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -59,13 +59,17 @@ function AddUserModal({ isOpen, onClose, addUser, userData, setFormData ,formDat
     formDataToSend.append('Issue', formData.Issue);
     formDataToSend.append('StatusChecked', formData.StatusChecked);
     formDataToSend.append('Assignto', formData.Assignto);
-    formDataToSend.append('profile_image',formData.profile_image)
+    formDataToSend.append('attachments',formData.attachments);
+    
     try {
       let response;
       if (formData.userId) {
-        response = await axios.post(`${apiUrl}/task/update`, formDataToSend, { headers: header }
-          
-        );
+        response = await axios.post(`${apiUrl}/task/update`, formDataToSend, {
+          headers: {
+            ...header,
+          'Content-Type': 'multipart/form-data'
+          },
+        });
       } else {
         response = await axios.post(`${apiUrl}/task/store`, formDataToSend, { headers: header });
       }
@@ -79,7 +83,7 @@ function AddUserModal({ isOpen, onClose, addUser, userData, setFormData ,formDat
         StatusChecked: '',
         Description: '',
         Assignto: '',
-        profile_image:'',
+        attachments:[],
        
       });
     } catch (error) {
@@ -182,7 +186,7 @@ function AddUserModal({ isOpen, onClose, addUser, userData, setFormData ,formDat
                 type="file"
                 multiple
                 className="form-control"
-                name="profile_image"
+                name="attachments"
                 onChange={handleImageChange}
               />
             </div>

@@ -24,7 +24,7 @@ function ProjectManagement() {
     StatusChecked: '',
     Description: '',
     Assignto: '',
-    profile_image:'',
+    attachments:[],
     
   });
   
@@ -109,7 +109,7 @@ const handleClick = async (userId) => {
       Issue: userData.Issue,
       StatusChecked: userData.StatusChecked,
       Assignto: userData.Assignto,
-      profile_image:userData.profile_image,
+      attachments:userData.attachments,
       
 
     });
