@@ -5,6 +5,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Cookies from 'js-cookie';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import DropzoneWithPreview from './DropZone';
+
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
@@ -44,7 +46,7 @@ function AddUserModal({ isOpen, onClose, addUser, userData, setFormData ,formDat
       }));
     }
   };
-
+ 
 
   // form submission *****
   const handleSubmit = async (e) => {
@@ -187,6 +189,7 @@ function AddUserModal({ isOpen, onClose, addUser, userData, setFormData ,formDat
                 onChange={handleImageChange}
               />
             </div>
+            <DropzoneWithPreview/>
             <div className="col-md-12 text-center">
               <button className="login-btn" type="submit">
                 Submit 

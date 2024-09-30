@@ -3,10 +3,13 @@ import { Link } from "react-router-dom";
 import AddUserModal from "./AddUserModal";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
 function ProjectManagement() {
+  const navigate = useNavigate();
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [userData, setUserData] = useState({});
   const [userId, setUserId] = useState('');
@@ -125,6 +128,11 @@ function ProjectManagement() {
       }
     }
 
+     // for view submission
+  const handleViewClick = (user) => {
+    navigate("/view");
+  };
+
   return (
     <>
       <div className="main-content-section">
@@ -167,7 +175,8 @@ function ProjectManagement() {
                             <div className="td-icons">
                              
                              <Link to=" ">
-                                <i className="fa fa-eye" ></i>
+                                <i className="fa fa-eye"  onClick={() => handleViewClick(user)}></i>
+                                
                               </Link>
                               
                                
