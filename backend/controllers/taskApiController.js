@@ -25,8 +25,24 @@ module.exports = {
 
 async function store(req,res) {
     try{
-    const{ProjectName, Issue, Description, Status, Assignto} =req.body;
-    const newProject = await Task.create({ProjectName,Issue,Description,Status, Assignto});
+    let array = [];  
+    // console.log(req.files,"55")
+    if (req.files && req.files.length > 0) {
+      for (let i = 0; i < req.files.length; i++) {
+        const fileObj = {
+          name: req.files[i].originalname,
+          size: req.files[i].size,
+          extension: req.files[i].mimetype.split('/')[1],
+         };
+        array.push(fileObj);
+      }
+      console.log('Validated files:', array);
+    } else {
+      return res.status(400).json({ error: 'No file uploaded.' });
+    }
+    req.body.attachments = array;
+    const{ProjectName, Issue, Description, Status, Assignto, attachments} =req.body;
+    const newProject = await Task.create({ProjectName,Issue,Description,Status, Assignto,attachments});
     console.log(newProject,"newProject")
     res.status(200).json({ status: true, message: "Project created successfully!", data: newProject });
 } catch (error) {
@@ -75,7 +91,7 @@ async function request(req, res) {
         res.status(500).json({ error: 'Something went wrong !' });
     }
 }
- 
+
 // async function update (req, res){
 //     try {
 //         const {Name,StatusChecked,userId} = req.body;

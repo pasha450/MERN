@@ -5,7 +5,6 @@ const multer = require('multer');
 const fs = require('fs');
 const upload = multer();
 
-
 const taskApiController = require('../controllers/taskApiController');
 const TaskRequest = require('../requests/TaskRequest');
 
@@ -21,9 +20,7 @@ const storageProfileImg = multer.diskStorage({
     filename: (req, file, callback) => {
         console.log(file,'fileeeee')
         const fileName = file.originalname.toLowerCase().split(' ').join('-');
-        const newFileName = Date.now() + fileName;
-        console.log(newFileName,"newFileName")
-        req.body.attachments = newFileName;
+        const newFileName = Date.now() + '-' + fileName;
         callback(null, newFileName);
     }
 });
@@ -40,7 +37,6 @@ var uploadProjectAttachment = multer({
         }   
     }
 });
-
 
 router.post('/',taskApiController.userList);
 router.post('/store',  uploadProjectAttachment.any(), taskApiController.store);
