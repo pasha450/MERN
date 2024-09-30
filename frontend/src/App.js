@@ -30,7 +30,7 @@ export default function App() {
        <Route path ="/project" element={<Project/>}></Route>
        <Route path ="/developer" element ={<Developer/>}></Route>
        <Route path ="/priority" element ={<Priority/>}></Route>
-       <Route path ="/view" element ={<ViewPage/>}></Route>
+       <Route path ="/view/:userId" element ={<ViewPage/>}></Route>
        
 
     </Routes>
