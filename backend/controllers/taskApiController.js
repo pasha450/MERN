@@ -19,14 +19,12 @@ module.exports = {
      update,
      deleted, 
      getDeveloper,
-     getPriority,
-     
+     getPriority,     
 }    
 
 async function store(req,res) {
     try{
     let array = [];  
-    // console.log(req.files,"55")
     if (req.files && req.files.length > 0) {
       for (let i = 0; i < req.files.length; i++) {
         const fileObj = {
@@ -43,7 +41,7 @@ async function store(req,res) {
     req.body.attachments = array;
     const{ProjectName, Issue, Description, Status, Assignto, attachments} =req.body;
     const newProject = await Task.create({ProjectName,Issue,Description,Status, Assignto,attachments});
-    console.log(newProject,"newProject")
+    console.log(newProject,"newwww")
     res.status(200).json({ status: true, message: "Project created successfully!", data: newProject });
 } catch (error) {
     console.error('Project creation error:', error);
@@ -114,9 +112,19 @@ async function request(req, res) {
 
 async function update(req, res) {
     try {
-        const { userId,password} = req.body;
-        const updateData = { ...req.body };
+
+      const { userId, ProjectName, Issue, Status, Description, Assignto } = req.body;
+      const updateData = {};
+        console.log(req.body,'heriyeee heriyee aa ')
         let  baseUrl = process.env.APP_URL
+
+      //  check if userId is  a valid objectId , else set it  to null  
+      if (mongoose.Types.ObjectId.isValid(userId)) {
+        updateData.userId =  new mongoose.Types.ObjectId(userId);
+      } else {
+        updateData.userId = null; 
+      } 
+      
         if (req.file != undefined) {
             let profileImage = updateData.profile_image;
             const filePath = "./assets/profileImage" + profileImage;
@@ -126,7 +134,7 @@ async function update(req, res) {
                 if (exists) {
                   fs.unlinkSync(filePath);
                 } else {
-             
+               
                 } 
               });
             }
@@ -134,14 +142,7 @@ async function update(req, res) {
           } else {
             delete updateData.profile_image;
           }
-        if (password) {
-            updateData.password = await global.securePassword(password);
-        } else {
-            delete updateData.password;
-        }
-     
-        // Update the user data
-        const userData = await Task.findByIdAndUpdate(userId, updateData, { new: true });
+        const userData = await Task.findByIdAndUpdate(userId,updateData, { new: true });
         if (!userData) {   //add new
             return res.status(404).json({ error: 'User not found' });
         }
