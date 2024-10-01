@@ -131,7 +131,7 @@ function ProjectManagement() {
      // for view submission
      const handleViewClick = (user) => {
       navigate(`/view/${user._id}`, { state: { user } });
-    };
+    };  
      
   return (
     <>
@@ -172,11 +172,11 @@ function ProjectManagement() {
                           <td>{user.Assignto ? user.Assignto.DeveloperName : 'Not Assigned'}</td>
                           <td>
                             <div className="td-icons">
-                                 {/* <Link to="/view" onClick={() => handleClick(user._id)}>
+                                 <Link to={'/view/'+user._id}>
                                     <i className="fa fa-eye"></i>
-                                  </Link>   */}
-                                
-                                  <button onClick={() => handleViewClick(user)}>View Details</button>
+                                  </Link>  
+                                  
+                                  {/* <button onClick={() => handleViewClick(user)}>View Details</button> */}
                                    
                                 <Link to="">
                                 <i className="fa fa-edit" onClick={() =>handleClick(user._id)}></i>

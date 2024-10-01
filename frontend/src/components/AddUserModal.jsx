@@ -7,7 +7,6 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import DropzoneWithPreview from './DropZone';
 
-
 const apiUrl = process.env.REACT_APP_API_URL;
 
 function AddUserModal({ isOpen, onClose, addUser, userData, setFormData ,formData,developerList,users}) {

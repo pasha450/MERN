@@ -23,33 +23,26 @@ const DropzoneWithPreview = () => {
     );
     setFiles((prevFiles) => [...prevFiles, ...previewFiles]);
   }, []);
-
-//   for validation the file formats
   
-
-
-
-
-
   // Clean up the file previews to avoid memory leaks
   React.useEffect(() => {
     return () => {
       files.forEach((file) => URL.revokeObjectURL(file.preview));
     };
   }, [files]);
-
+   
   // Set up the dropzone
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     accept: 'image/*',
   });
-
-//   for delete 
+  
+//   for delete the dropzone
   const handleDelete = (fileName, event) => {
-    event.stopPropagation(); // Prevent the dropzone from re-triggering the file input click
+ // it used for stop  the retrigered --  
+    event.stopPropagation(); 
     setFiles(files.filter((file) => file.name !== fileName));
   };
-
   return (
     <div
       {...getRootProps()}
