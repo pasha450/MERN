@@ -19,7 +19,8 @@ module.exports = {
      update,
      deleted, 
      getDeveloper,
-     getPriority,     
+     getPriority,  
+     view,   
 }    
 
 async function store(req,res) {
@@ -34,6 +35,7 @@ async function store(req,res) {
          };
         array.push(fileObj);
       }
+      
       console.log('Validated files:', array);
     } else {
       return res.status(400).json({ error: 'No file uploaded.' });
@@ -41,7 +43,7 @@ async function store(req,res) {
     req.body.attachments = array;
     const{ProjectName, Issue, Description, Status, Assignto, attachments} =req.body;
     const newProject = await Task.create({ProjectName,Issue,Description,Status, Assignto,attachments});
-    console.log(newProject,"newwww")
+    console.log(newProject,"Newwww")
     res.status(200).json({ status: true, message: "Project created successfully!", data: newProject });
 } catch (error) {
     console.error('Project creation error:', error);
@@ -62,7 +64,7 @@ async function userList(req, res) {
     } catch (error) {
         console.log(error);
         res.status(500).json({ error: 'Internal server error' });
-    }
+    } 
 }
 
 async function edit(req,res){
@@ -73,7 +75,6 @@ async function edit(req,res){
             return res.status(401).json({ status: false, error: 'Sorry ! No Data Found' });
         }
         res.status(200).json({status: true, userData:userData});
-         
     } catch (error) {
         console.log(error);
         res.status(500).json({ error: 'Something went wrong !' });
@@ -115,16 +116,16 @@ async function update(req, res) {
 
       const { userId, ProjectName, Issue, Status, Description, Assignto } = req.body;
       const updateData = {};
-        console.log(req.body,'heriyeee heriyee aa ')
+        // console.log(req.body,'heriyeee heriyee aa ')
         let  baseUrl = process.env.APP_URL
-
-      //  check if userId is  a valid objectId , else set it  to null  
+        
+      //  check if userId is  a valid objectId , else set it  to null 
       if (mongoose.Types.ObjectId.isValid(userId)) {
         updateData.userId =  new mongoose.Types.ObjectId(userId);
       } else {
         updateData.userId = null; 
       } 
-      
+        
         if (req.file != undefined) {
             let profileImage = updateData.profile_image;
             const filePath = "./assets/profileImage" + profileImage;
@@ -199,8 +200,22 @@ async function getPriority(req,res){
         res.status(500).json({ status: false,error:'Internal server error'}); 
     }
 }
+  // Api for View 
+
+async function view(req, res) {
+  try {
+    const userId = req.params.id; 
+    const task = await Task.findById(userId).populate('Assignto', 'DeveloperName').populate('Status', 'Name'); 
+    if (!task) {
+      return res.status(404).json({ error: 'Task not found' });
+    }
+    res.status(200).json({ status: true,task, message: 'Task retrieved successfully'});
+  } catch (error) {
+    console.error('Error fetching task details:', error);
+    res.status(500).json({ error: 'Failed to retrieve user details' });
+  }
+}
 
 
- 
   
 

@@ -46,6 +46,8 @@ router.post('/update',middleware.verifyToken,uploadProjectAttachment.any(),taskA
 router.post('/deleted',taskApiController.deleted);
 router.get('/get-developer',taskApiController.getDeveloper);
 router.get('/get-priority',taskApiController.getPriority);
+router.get('/view/:id',taskApiController.view);
+
 
 
 module.exports=router;
