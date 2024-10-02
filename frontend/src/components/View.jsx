@@ -11,6 +11,7 @@ function View() {
 //   ## ## access the pass userdata via location --------------- or intialize to null 
   const [user, setUser] = useState(location.state?.user || null); 
   const { userId } = useParams();
+   
 
   useEffect(() => {
     if (!user && userId) {
@@ -21,7 +22,7 @@ function View() {
             'Authorization': token
           };
           const response = await axios.get(`${apiUrl}/task/view/${userId}`,{ headers});
-          setUser(response.data.userData); 
+          setUser(response.data.task); 
         } catch (error) {
           console.error("Error fetching user data:", error);
         }

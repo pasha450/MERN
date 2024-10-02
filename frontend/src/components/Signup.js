@@ -21,7 +21,7 @@ function Signup() {
               password:"",
               confirmPassword:"",
         });  
-    
+     
         const apiUrl = process.env.REACT_APP_API_URL;
         // console.log(apiUrl,'apiUrl');
    useEffect(()=>{
