@@ -9,7 +9,7 @@ const apiUrl = process.env.REACT_APP_API_URL;
 
 function ProjectManagement() {
   const navigate = useNavigate();
-
+ 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [userData, setUserData] = useState({});
   const [userId, setUserId] = useState('');
@@ -128,10 +128,7 @@ function ProjectManagement() {
       }
     }
 
-     // for view submission
-     const handleViewClick = (user) => {
-      navigate(`/view/${user._id}`, { state: { user } });
-    };  
+     
      
   return (
     <>
@@ -174,10 +171,7 @@ function ProjectManagement() {
                             <div className="td-icons">
                                  <Link to={'/view/'+user._id}>
                                     <i className="fa fa-eye"></i>
-                                  </Link>  
-                                  
-                                  {/* <button onClick={() => handleViewClick(user)}>View Details</button> */}
-                                   
+                                  </Link>       
                                 <Link to="">
                                 <i className="fa fa-edit" onClick={() =>handleClick(user._id)}></i>
                               </Link>

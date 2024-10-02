@@ -50,7 +50,7 @@ function AddUserModal({ isOpen, onClose, addUser, userData, setFormData ,formDat
   // form submission *****
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+    
     const formDataToSend = new FormData();
     formDataToSend.append('userId', formData.userId);
     formDataToSend.append('ProjectName', formData.ProjectName);
